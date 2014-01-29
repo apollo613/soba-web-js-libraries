@@ -8,6 +8,56 @@
 	<h3>Review Source File</h3>
 	<p>Run in the browser and check the console</p>
 
+	<script type="text/template" id="person">
+		<div class="person">
+			<p>Person: <%= firstName + " " +  lastName %> is <%= age %> years old. </p>
+		</div>
+	</script>
+
+	<script type="text/template" id="hair-template">
+		<div class="person">
+			<p>Most common hair: <%= hair %>. It occurs <%= num %> times.</p>
+		</div>
+	</script>
+
+	<script type="text/template" id="music-template">
+		<div class="person">
+			<p>Most common music: <%= music %>. It is <%= num %> peoples favorites.</p>
+		</div>
+	</script>
+
+	<script type="text/template" id="techno-template">
+		<div class="person">
+			<p>Techno lover is: <%= firstName + " " +  lastName %></p>
+		</div>
+	</script>
+
+	<script type="text/template" id="country-template">
+		<div class="person">
+			<p>Number of country fans: <%= num %></p>
+		</div>
+	</script>
+
+	<script type="text/template" id="person-template">
+		<div class="person">
+			<p>Name: <%= name() %></p>
+			<p>Age: <%= age %></p>
+			<p>Sex: <%= gender() %></p>
+			<p>Eye color: <%= eyes %></p>
+			<p>Hair color: <%= hair %></p>
+			<p>Mavorite music: <%= music %></p>
+		</div>
+	</script>
+ 
+	<!-- <div id="oldest-person"></div> -->
+	<div id="first"></div>
+	<div id="youngest-person"></div>
+	<div id="popular-hair"></div>
+	<div id="popular-music"></div>
+	<div id="youngest-techno"></div>
+	<div id="num-country"></div>
+	<div id="male-female"></div>
+
 	<!-- JavaScript libraries -->
 
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -27,37 +77,121 @@
 
 		// 1. Use underscore to find the oldest person. 
 		//		Use jQuery to inject their full name into the page, e.g. 'Oldest peron: x'
-
+		var oldest = _.reduce(people, function(initial, person) { return person.age > initial.age ? person : initial; } ,people[0]);
+		var PersonTempate = $('#person').html();
+		var oldesthtml = _.template(PersonTempate, oldest);
+		$('#first').append(oldesthtml);
 		
 		// 2. Use underscore to find the youngest person
 		//		Use jQuery to inject their full name into the page, e.g. 'Youngest peron: x'
-
+		var oldest = _.reduce(people, function(initial, person) { return person.age < initial.age ? person : initial; } ,people[0]);
+		var PersonTempate = $('#person').html();
+		var oldesthtml = _.template(PersonTempate, oldest);
+		$('#first').append(oldesthtml);
 
 		// 3. Use underscore to find the most common hair color
 		//		Use jQuery to inject it into the page, e.g. 'Most common hair color: x'
 
+		// find the most common hair color
+		var hairs = [];
+		_.each(people,function(el) {
+			hairs.push(el.hair);
+		});
+		unHairs = _.uniq(hairs);
+
+
+		// This is so ugly... It makes me want to cry. Or alternatively find the really pretty functional programming solution.
+		var maxHairNum = 0;
+		var maxHairColor = "";
+		_.each(hairs, function(el) {
+			count = 0;
+			var newList = _.filter(hairs,function(hair) {
+				if (el == hair) count++;
+			});
+			if (count > maxHairNum) {
+				maxHairNum = count;
+				maxHairColor = el;
+			}
+		});
+
+		var person = {hair: maxHairColor, num: maxHairNum};
+		var PersonTempate = $('#hair-template').html();
+		var hairhtml = _.template(PersonTempate, person);
+		$('#first').append(hairhtml);
 
 		// 4. Use underscore to find the most common music preference
 		//		Use jQuery to inject it into the page, e.g. 'Most popular music: x'
 
+		var musics = [];
+		_.each(people,function(el) {
+			musics.push(el.music);
+		});
+		unMusic = _.uniq(musics);
+
+		var maxMusicNum = 0;
+		var maxMusicChoice = "";
+		_.each(musics, function(el) {
+			count = 0;
+			var newList = _.filter(musics,function(mus) {
+				if (el == mus) count++;
+			});
+			if (count > maxMusicNum) {
+				maxMusicNum = count;
+				maxMusicChoice = el;
+			}
+		});
+
+		var person = {music: maxMusicChoice, num: maxMusicNum};
+		var PersonTempate = $('#music-template').html();
+		var musichtml = _.template(PersonTempate, person);
+		$('#first').append(musichtml);
 
 		// 5. Use underscore to find the youngest person who likes 'techno' music
 		//		Log their name to the console.
+		var techPerson;
+		_.each(people, function(el){
+			if (el.music == 'techno') techPerson = el;
+		});
+		var PersonTempate = $('#techno-template').html();
+		var technohtml = _.template(PersonTempate, techPerson);
+		$('#first').append(technohtml);
 
 
 		// 6. Use underscore to find out how many people like country.
 		//		Log the amount to the console.
+		var numCountryLovers = _.reduce(people, function(initial, person) {if (person.music == "country") return initial + 1; else return initial;}, 0);
+		var countryPerson = {num: numCountryLovers};
+		var PersonTempate = $('#country-template').html();
+		var countryhtml = _.template(PersonTempate, countryPerson);
+		$('#first').append(countryhtml);
 
 
 		// 7. Use underscore to create a new list of people. The list should contain
 		//		the same people in the original list, except for now, everybody likes
 		//		techno music. Log the result to the console.
+		var newPeople = [];
+		_.each(people, function(person) {
+			var cloned = _.clone(person);
+			cloned["music"] = "techno";
+			newPeople.push(cloned);
+			console.log(cloned);
+		});
 
+		console.log("\n\n");
 
 		// 8. Use underscore to create a new list of people. The list should 
 		//		be based on the original list, except for now, everybody is twice
 		//		as old as they were before, and if they are older than 70, do not include 
 		//		them in the resulting list. Everything else remains the same.
+		var newList = [];
+		_.each(people, function(person) {
+			if (person.age < 70) {
+				var cloned = _.clone(person);
+				cloned["age"] *= 2;
+				newList.push(cloned);
+				console.log(cloned);
+			}
+		});
 
 
 		// 9. Use underscore to iterate through the list. Use underscore templating
@@ -69,6 +203,22 @@
 		//		attribute into text: 0 = 'Male', 1 = 'Female' and use it in the template
 		//		Be sure to extend each of the objects with your helper function!
 		//		Use jQuery to inject the resulting html into the page.
+		var helpers = {
+			name: function() {
+				return this.firstName + " " + this.lastName;
+			},
+			gender: function() {
+				return this.sex == 0 ? "Male" : "Female";
+			}
+		}
+		var PersonTempate = $('#person-template').html();
+		_.each(newList, function(person) {
+			_.extend(person, helpers);
+			var personhtml = _.template(PersonTempate, person);
+			$('#first').append(personhtml);
+		});
+
+
 
 	</script>
 

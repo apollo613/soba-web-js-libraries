@@ -43,38 +43,37 @@
 	<script type="text/template" id="person-template">
 		<div class="person">
 			<p>Name: <%= name %> </p>
-			<p>Account: <%= accountDescription() %> </p>
 			<p>Balance: $<%= balance %></p>
 		</div>
 	</script>
 
 	<script type="text/javascript">
 		
-		var account = accounts[0];
-		console.log(account);
+		// var account = accounts[0];
+		// console.log(account);
 
-		// big honing html string
+		// // big honing html string
 
-		var aPerson = "<div class='person'>" + 
-			"<p>Name: " + account.name + "</p>" +
-			"<p>Account: " + account.type + "</p>" +
-			"<p>Balance: $" + account.balance + "</p>" +
-			"</div>";
+		// var aPerson = "<div class='person'>" + 
+		// 	"<p>Name: " + account.name + "</p>" +
+		// 	"<p>Account: " + account.type + "</p>" +
+		// 	"<p>Balance: $" + account.balance + "</p>" +
+		// 	"</div>";
 
-		$('#people').append(aPerson);
+		// $('#people').append(aPerson);
 
-		// element by element
+		// // element by element
 
-		var qDiv = $("<div>", {
-			"class": "person",
-			id: 1
-		});
+		// var qDiv = $("<div>", {
+		// 	"class": "person",
+		// 	id: 1
+		// });
 
-		qDiv.append( $("<div>", { text: "Name: " + account.name }) );
-		qDiv.append( $("<div>", { text: "Type: " + account.type }) );
-		qDiv.append( $("<div>", { text: "Balance: $" + account.balance }) );
+		// qDiv.append( $("<div>", { text: "Name: " + account.name }) );
+		// qDiv.append( $("<div>", { text: "Type: " + account.type }) );
+		// qDiv.append( $("<div>", { text: "Balance: $" + account.balance }) );
 
-		$('#people').append(qDiv);
+		// $('#people').append(qDiv);
 
 		var account2 = accounts[1];
 
@@ -84,15 +83,15 @@
 		//var account2html = _.template(PersonTempate, account2);
 		//$('#people').append(account2html);
 
-		var helpers = {
-			accountDescription: function() {
-				return this.type == 0 ? "checking" : "savings";
-			}
-		}
+		// var helpers = {
+		// 	accountDescription: function() {
+		// 		return this.type == 0 ? "checking" : "savings";
+		// 	}
+		// }
 
-		_.extend(account2, helpers);
+		// _.extend(account2, helpers);
 
-		console.log(account2.accountDescription());
+		// console.log(account2.accountDescription());
 
 		var account2html = _.template(PersonTempate, account2);
 		$('#people').append(account2html);
